@@ -1,0 +1,11 @@
+(ql:quickload "uiop")
+
+(defun exec ()
+  (princ "Enter the day you wish to run: ")
+  (setq ans (write-to-string (read)))
+  (load (concatenate 'string "day" ans "/" ans "a.lisp"))
+  (setq a (format nil "~%~%~%~%~%Part 1: ~D~%~%" (start)))
+  (load (concatenate 'string "day" ans "/" ans "b.lisp"))
+  (setq b (format nil "Part 2: ~D~%~%~%" (start)))
+  (princ (concatenate 'string a b))
+  t)
