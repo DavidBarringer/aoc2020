@@ -2,11 +2,14 @@
 ;;; Returns a list with nils and two correct solutions in a single list.
 ;;; After removing the nils, the first 3 elements (i.e. a solution) are multiplied together.
 (defun check-sum (l)
-  (if (= (length l) 1) nil (cons (loop for x in (CDR l) append (CAR (loop for y in (CDDR l) if (= 2020 (+ (CAR l) x y)) collect (list (CAR l) x y)))) (check-sum (CDR l)))))
+  (if (= (length l) 1) nil
+                        (cons (loop for x in (CDR l) append
+                                (CAR (loop for y in (CDDR l) if (= 2020 (+ (CAR l) x y)) collect (list (CAR l) x y)))) 
+                              (check-sum (CDR l)))))
 
 (defun start ()
-  (setq l (CAR (remove nil (check-sum (mapcar 'parse-integer (get-file "day1/day1.csv"))))))
-  (* (CAR l) (CADR l) (CADDR l)))
+  (let ((l (CAR (remove nil (check-sum (mapcar 'parse-integer (get-file "day1/day1.csv")))))))
+    (* (CAR l) (CADR l) (CADDR l))))
 
 ;;; These functions are an optimised solution, iterates through one list as normal, subtracting the item from 2020
 ;;; the other lists are sorted (one low-to-high, one high-to-low) sum the first element of each and compare to the result above.
@@ -19,6 +22,6 @@
         ((= (- 2020 l3) (+ (CAR l1) (CAR l2))) (list (CAR l1) (CAR l2) l3))))
 
 (defun start-o ()
-  (setq l (sort (get-file "day1/day1.csv") #'<))
-  (setq r (CAR (remove nil (loop for x in l collect (check-sum-o l (reverse l) x)))))
-  (apply '* r))
+  (let ((l (sort (mapcar 'parse-integer (get-file "day1/day1.csv")) #'<)))
+    (let ((r (CAR (remove nil (loop for x in l collect (check-sum-o l (reverse l) x))))))
+      (apply '* r))))

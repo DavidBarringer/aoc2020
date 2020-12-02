@@ -4,13 +4,13 @@
 
 ;;; Get the count of required char in string and checks it is between the required values
 (defun check-valid (minmax ch pass)
-  (setq c (count-chars ch pass))
-  (AND (<= (CAR minmax) c) (>= (CADR minmax) c)))
+  (let ((c (count-chars ch pass)))
+  (AND (<= (CAR minmax) c) (>= (CADR minmax) c))))
 
 ;;; Splits a password specification into ((min max) char password)
 (defun get-pass-details (pass)
-  (setq p (split " " pass))
-  (list (mapcar 'parse-integer (split "-" (CAR p))) (subseq (CADR p) 0 1) (CADDR p)))
+  (let ((p (split " " pass)))
+  (list (mapcar 'parse-integer (split "-" (CAR p))) (subseq (CADR p) 0 1) (CADDR p))))
 
 ;;; Splits each password spec string into useable details, then applies the check using them, counts successes
 (defun start ()
