@@ -11,7 +11,7 @@
 
 (defun get-pass-details (pass)
   (let ((p (split " " pass)))
-  (list (mapcar 'parse-integer (split "-" (CAR p))) (subseq (CADR p) 0 1) (CADDR p))))
+    (list (mapcar 'parse-integer (split "-" (CAR p))) (subseq (CADR p) 0 1) (CADDR p))))
 
 ;;; Same as day 1
 (defun start ()
