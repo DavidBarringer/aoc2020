@@ -15,6 +15,3 @@
 ;;; Splits each password spec string into useable details, then applies the check using them, counts successes
 (defun start ()
   (loop for i in (mapcar 'get-pass-details (get-file "day2/day2.csv")) count (apply 'check-valid i)))
-
-(defun get-file (name)
-  (uiop:read-file-lines name))

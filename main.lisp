@@ -2,6 +2,10 @@
 (ql:quickload "cl-ppcre")
 (use-package 'cl-ppcre)
 
+;;; Function used to load data from a file, no other parsing happens here
+(defun get-file (name)
+  (uiop:read-file-lines name))
+
 ;;; Used to load a specific day and part (remember that part must be a char)
 (defun ld (day part)
   (setq s (format nil "day~D/~D~C.lisp" day day part))
