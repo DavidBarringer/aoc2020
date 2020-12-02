@@ -3,7 +3,7 @@
 (defun char-pos (ch string p1 p2)
   (let ((b1 (eq ch (nth (- p1 1) string)))
         (b2 (eq ch (nth (- p2 1) string))))
-        (AND (OR b1 b2) (NOT (AND b1 b2)))))
+          (AND (OR b1 b2) (NOT (AND b1 b2)))))
 
 ;;; Changes the input into a useable form for char-pos
 (defun check-valid (pos ch pass)
