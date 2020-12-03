@@ -2,12 +2,12 @@
 ;;; Returns a list with nils and a single solution as a dotted pair.
 (defun check-sum (l)
   (if (= (length l) 1) nil
-    (cons (loop for x in (CDR l)
-            if (= 2020 (+ (CAR l) x)) append (cons (CAR l) x))
-                                      (check-sum (CDR l)))))
+                      (nconc (loop for x in (CDR l)
+                                if (= 2020 (+ (CAR l) x)) collect (cons (CAR l) x))
+                              (check-sum (CDR l)))))
 
 (defun start ()
-  (let ((l (CAR (remove nil (check-sum (mapcar 'parse-integer (get-file "day1/day1.csv")))))))
+  (let ((l (CAR (check-sum (mapcar 'parse-integer (get-file "day1/day1.csv"))))))
           (* (CAR l) (CDR l))))
 
 ;;; An optimised solution. Sorts into two lists (one low-to-high, one high-to-low) the first elements of each are added together.
