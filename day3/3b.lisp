@@ -11,5 +11,5 @@
 ;;; Makes a list of the result for each run, then multiply them
 (defun start()
   (let ((map (make-map (get-file "day3/day3.csv")))
-        (runs ((1 . 1) (3 . 1) (5 . 1) (7 . 1) (1 . 2))))
+        (runs '((1 . 1) (3 . 1) (5 . 1) (7 . 1) (1 . 2))))
           (apply '* (loop for run in runs collect (count-trees map (CAR run) (CDR run))))))
