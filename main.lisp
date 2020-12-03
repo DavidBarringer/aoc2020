@@ -14,7 +14,7 @@
 ;;; Benchmarking tools
 ;;; This function makes it pretty
 (defun bench (func-name runs &optional args)
-  (format nil "~Fms" (float (bench-fraction func-name runs args))))
+  (format nil "~Fs" (float (bench-fraction func-name runs args))))
 
 ;;; This function runs file given amount of times and averages the real times
 (defun bench-fraction (func-name runs &optional args)
