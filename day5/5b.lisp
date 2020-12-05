@@ -8,7 +8,7 @@
   (loop for seat in l collect (+ (* 8 (seat-conv (CAR seat))) (seat-conv (CADR seat)))))
 
 (defun parse-input (l)
-  (mapcar (lambda (n) (list (subseq (s-to-bin n) 0 7) (subseq (s-to-bin n) 7))) l))
+  (mapcar (lambda (n) (list (subseq n 0 7) (subseq n 7))) (mapcar 's-to-bin l)))
 
 ;;; Makes a list from 0 to highest seat id then does a set difference of that with list of seat ids
 ;;; Returns in high-to-low, so the first element is the missing seat
