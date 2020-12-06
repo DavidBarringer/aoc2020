@@ -1,8 +1,8 @@
 ;;; Goes through each group tries to find each unique character in each answer
 ;;; If any answer doesn't contain the charcater, the character is not counted
 (defun parse-input-check (l)
-    (loop for group in (parse-input l) for target in (parse-input-unique l) sum
-      (loop for c in target if (notany 'null (mapcar (lambda (s) (find c s)) group)) count c)))
+  (loop for group in (parse-input l) for target in (parse-input-unique l) sum
+    (loop for c in target if (notany 'null (mapcar (lambda (s) (find c s)) group)) count c)))
 
 ;;; This splits on double newline then splits strings in resulting list by single newline
 (defun parse-input (l)
