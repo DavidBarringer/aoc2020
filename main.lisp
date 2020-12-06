@@ -2,9 +2,13 @@
 (ql:quickload "cl-ppcre")
 (use-package 'cl-ppcre)
 
-;;; Function used to load data from a file, no other parsing happens here
+;;; Function used to load data from a file, seperated by new line, no other parsing happens here
 (defun get-file (name)
   (uiop:read-file-lines name))
+
+;;; Function used to load data from a file as a single string
+(defun get-file-string (name)
+  (uiop:read-file-string name))
 
 ;;; Used to load a specific day and part (remember that part must be escaped)
 (defun ld (day part)
