@@ -8,7 +8,7 @@
 
 ;;; Function used to load data from a file as a single string
 (defun get-file-string (name)
-  (uiop:read-file-string name))
+  (remove #\Return (uiop:read-file-string name)))
 
 ;;; Used to load a specific day and part (remember that part must be escaped)
 (defun ld (day part)
