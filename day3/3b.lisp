@@ -1,12 +1,15 @@
 (defun tree-check (x y map)
-  (eq #\# (nth (mod x (length (CAR map))) (nth y map))))
+  (eq #\# (nth x (nth y map))))
 
 ;;; Modified to accommodate different gradients
 (defun count-trees (map xdiff ydiff)
   (loop for i from 0 to (length map) count (tree-check (* xdiff i) (* ydiff i) map)))
 
 (defun make-map (l)
-  (mapcar (lambda (n) (concatenate 'list n)) l))
+  (mapcar 'circular (mapcar (lambda (n) (concatenate 'list n)) l)))
+
+(defun circular (l)
+  (setf (CDR (last l)) l))
 
 ;;; Makes a list of the result for each run, then multiply them
 (defun start()
