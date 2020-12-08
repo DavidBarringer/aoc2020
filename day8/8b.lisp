@@ -4,7 +4,7 @@
   (pos 0))
 
 (defmacro create-machine (name code)
-  `(setq name (make-machine :code ,code)))
+  `(setq ,(eval name) (make-machine :code ,code)))
 
 (defun parse-input (l)
   (loop for s in l collect (cons (read-from-string (CAR (split " " s))) (mapcar 'parse-integer (CDR (split " " s))))))
@@ -19,14 +19,14 @@
         (t nil)))
 
 (defun nop (name in)
-  (setf (machine-pos name) (+ 1 (machine-pos name))))
+  (setf (machine-pos (eval name)) (+ 1 (machine-pos (eval name)))))
 
 (defun acc (name in)
-  (setf (machine-acc name) (+ (CAR in) (machine-acc name)))
-  (setf (machine-pos name) (+ 1 (machine-pos name))))
+  (setf (machine-acc (eval name)) (+ (CAR in) (machine-acc (eval name))))
+  (setf (machine-pos (eval name)) (+ 1 (machine-pos (eval name)))))
 
 (defun jmp (name in)
-  (setf (machine-pos name) (+ (CAR in) (machine-pos name))))
+  (setf (machine-pos (eval name)) (+ (CAR in) (machine-pos (eval name)))))
 
 ;;; Creates a list of codes, each replacing jmp with nop at a different part of the code
 ;;; Does this by going through each instruction, checking if the op is "jmp".
@@ -43,4 +43,4 @@
 ;;; Makes and runs a machine for each possible code, collecting each result. The non-nil result is the answer.
 (defun start ()
   (let ((input (parse-input (get-file "day8/day8.csv"))))
-    (CAR (remove nil (loop for c in (nconc (replace-jmp input) (replace-nop input)) collect (run-machine (create-machine (gensym) c) nil))))))
+    (CAR (remove nil (loop for c in (nconc (replace-jmp input) (replace-nop input)) collect (run-machine (create-machine 'hhgc c) nil))))))

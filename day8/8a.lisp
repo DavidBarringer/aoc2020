@@ -6,7 +6,7 @@
 
 ;;; Creates a machine with given name and code
 (defmacro create-machine (name code)
-  `(setq name (make-machine :code ,code)))
+  `(setq ,(eval name) (make-machine :code ,code)))
 
 ;;; Split on space, collect operations with their arguments
 (defun parse-input (l)
@@ -23,16 +23,16 @@
 
 ;;; Function just increase position
 (defun nop (name in)
-  (setf (machine-pos name) (+ 1 (machine-pos name))))
+  (setf (machine-pos (eval name)) (+ 1 (machine-pos (eval name)))))
 
 ;;; Add argument to accumulator of given machine
 (defun acc (name in)
-  (setf (machine-acc name) (+ (CAR in) (machine-acc name)))
-  (setf (machine-pos name) (+ 1 (machine-pos name))))
+  (setf (machine-acc (eval name)) (+ (CAR in) (machine-acc (eval name))))
+  (setf (machine-pos (eval name)) (+ 1 (machine-pos (eval name)))))
 
 ;;; Add argument to position of given machine
 (defun jmp (name in)
-  (setf (machine-pos name) (+ (CAR in) (machine-pos name))))
+  (setf (machine-pos (eval name)) (+ (CAR in) (machine-pos (eval name)))))
 
 (defun start ()
   (run-machine (create-machine (gensym) (parse-input (get-file "day8/day8.csv"))) nil))
