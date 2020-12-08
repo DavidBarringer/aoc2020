@@ -1,14 +1,19 @@
+;;; Structure of a machine, accumulator and position are initialised to 0
 (defstruct machine
   code
   (acc 0)
   (pos 0))
 
-(defmacro make-hhgc (name code)
+;;; Creates a machine with given name and code
+(defmacro create-machine (name code)
   `(setq name (make-machine :code ,code)))
 
+;;; Split on space, collect operations with their arguments
 (defun parse-input (l)
   (loop for s in l collect (cons (read-from-string (CAR (split " " s))) (mapcar 'parse-integer (CDR (split " " s))))))
 
+;;; Checks if position has already been seen. If it has return the accumulator of the machine
+;;; If it hasn't, add it to list then call the function with arguments and run the next iteration of the machine
 (defun run-machine (name poslist)
   (cond ((null (find (machine-pos name) poslist))
           (setf poslist (cons (machine-pos name) poslist))
@@ -16,15 +21,18 @@
           (run-machine name poslist))
         (t (machine-acc name))))
 
+;;; Function just increase position
 (defun nop (name in)
   (setf (machine-pos name) (+ 1 (machine-pos name))))
 
+;;; Add argument to accumulator of given machine
 (defun acc (name in)
   (setf (machine-acc name) (+ (CAR in) (machine-acc name)))
   (setf (machine-pos name) (+ 1 (machine-pos name))))
 
+;;; Add argument to position of given machine
 (defun jmp (name in)
   (setf (machine-pos name) (+ (CAR in) (machine-pos name))))
 
 (defun start ()
-  (run-machine (make-hhgc (gensym) (parse-input (get-file "day8/day8.csv"))) nil))
+  (run-machine (create-machine (gensym) (parse-input (get-file "day8/day8.csv"))) nil))
