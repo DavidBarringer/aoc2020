@@ -1,0 +1,17 @@
+(defun parse-input (l)
+  (loop for s in l collect (cons (char (subseq s 0 1 ) 0) (parse-integer (subseq s 1)))))
+
+(defun move-ship (x y facing steps)
+  (cond ((null steps) (cons x y))
+        ((eq #\N (CAAR steps)) (move-ship x (+ y (CDAR steps)) facing (CDR steps)))
+        ((eq #\E (CAAR steps)) (move-ship (+ x (CDAR steps)) y facing (CDR steps)))
+        ((eq #\S (CAAR steps)) (move-ship x (- y (CDAR steps)) facing (CDR steps)))
+        ((eq #\W (CAAR steps)) (move-ship (- x (CDAR steps)) y facing (CDR steps)))
+        ((eq #\L (CAAR steps)) (move-ship x y (mod (+ facing (/ (CDAR steps) 90)) 4) (CDR steps)))
+        ((eq #\R (CAAR steps)) (move-ship x y (mod (- facing (/ (CDAR steps) 90)) 4) (CDR steps)))
+        ((eq #\F (CAAR steps)) (if (= 0 (mod facing 2)) (move-ship (+ x (* (- facing 1) (CDAR steps))) y facing (CDR steps))
+                                                        (move-ship x (+ y (* (- facing 2) (CDAR steps))) facing (CDR steps))))))
+
+(defun start ()
+  (let ((final (move-ship 0 0 2 (parse-input (get-file "day12/day12.csv")))))
+    (+ (abs (CAR final)) (abs (CDR final)))))
