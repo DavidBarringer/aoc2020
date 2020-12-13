@@ -9,4 +9,4 @@
 
 (defun start ()
   (let ((input (parse-input (get-file "day13/day13.csv"))))
-    (contest 1 1 input)))
+    (- (contest 1 1 input) (length input))))
