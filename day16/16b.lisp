@@ -2,19 +2,19 @@
   (let ((types (split (format nil "~%~%") l)))
     (list (loop for c in (split (format nil "~%") (CAR types)) collect
             (loop for n in (split " " c) for r = (split "-" n) if (= 2 (length r)) collect (cons (parse-integer (CAR r)) (parse-integer (CADR r)))))
-          (loop for n in (split "," (CADR (split (format nil "~%") (CADR types)))) collect (parse-integer n))
-          (loop for tic in (CDR (split (format nil "~%") (CADDR types))) collect (loop for n in (split "," tic) collect (parse-integer n))))))
+          (mapcar 'parse-integer (split "," (CADR (split (format nil "~%") (CADR types)))))
+          (mapcar (lambda (o) (mapcar 'parse-integer (split "," o))) (CDR (split (format nil "~%") (CADDR types)))))))
 
 (defun check-valid (n &rest ranges)
-  (some (lambda (b) (eq b t)) (loop for r in ranges collect (AND (>= n (CAR r)) (<= n (CDR r))))))
+  (notevery 'null (mapcar (lambda (r) (AND (>= n (CAR r)) (<= n (CDR r)))) ranges)))
 
 ;;; Differes from part a in that it returns false if any number fails in a ticket
 (defun check-ticket (ranges ticket)
-  (every 'null (loop for n in ticket for res = (loop for r in ranges collect (apply 'check-valid n r)) collect (every 'null res))))
+  (notevery 'null (mapcar (lambda (n) (every 'null (mapcar (lambda (r) (apply 'check-valid n r)) ranges))) ticket)))
 
 ;;; Keeps a ticket if all of its numbers pass the checks
 (defun check-tickets (ranges tickets)
-  (loop for tic in tickets if (check-ticket ranges tic) collect tic))
+  (remove-if (lambda (tic) (check-ticket ranges tic)) tickets))
 
 ;;; For each number in each ticket, if the number falls in the range given, add it to the list
 (defun check-range (range tickets)

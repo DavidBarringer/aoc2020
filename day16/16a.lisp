@@ -7,20 +7,20 @@
   (let ((types (split (format nil "~%~%") l)))
     (list (loop for c in (split (format nil "~%") (CAR types)) collect
             (loop for n in (split " " c) for r = (split "-" n) if (= 2 (length r)) collect (cons (parse-integer (CAR r)) (parse-integer (CADR r)))))
-          (loop for n in (split "," (CADR (split (format nil "~%") (CADR types)))) collect (parse-integer n))
-          (loop for tic in (CDR (split (format nil "~%") (CADDR types))) collect (loop for n in (split "," tic) collect (parse-integer n))))))
+          (mapcar 'parse-integer (split "," (CADR (split (format nil "~%") (CADR types)))))
+          (mapcar (lambda (o) (mapcar 'parse-integer (split "," o))) (CDR (split (format nil "~%") (CADDR types)))))))
 
 ;;; Takes a number and a list of dotted pairs, checks that n is between the numbers in at least one of the dotted pairs.
 (defun check-valid (n &rest ranges)
-  (some (lambda (b) (eq b t)) (loop for r in ranges collect (AND (>= n (CAR r)) (<= n (CDR r))))))
+  (notevery 'null (mapcar (lambda (r) (AND (>= n (CAR r)) (<= n (CDR r)))) ranges)))
 
-;;; For each number in a ticket, check that number is valid for the ranges, if it fails every check, it is added to the result.
+;;; Removes every number from a ticket that passes at least one range check.
 (defun check-ticket (ranges ticket)
-  (loop for n in ticket for res = (loop for r in ranges collect (apply 'check-valid n r)) if (every 'null res) collect n))
+  (remove-if (lambda (n) (notevery 'null (mapcar (lambda (r) (apply 'check-valid n r)) ranges))) ticket))
 
-;;; For every ticket, check the validity of its numbers, collected into a single list.
+;;; For every ticket, gets the numbers that fail every check, collected into a single list.
 (defun check-tickets (ranges tickets)
-  (loop for tic in tickets nconc (check-ticket ranges tic)))
+  (apply 'nconc (mapcar (lambda (tic) (check-ticket ranges tic)) tickets)))
 
 ;;; Sum the numbers that fail the checks in the other tickets.
 (defun start ()
