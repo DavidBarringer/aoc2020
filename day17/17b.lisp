@@ -9,14 +9,14 @@
                                                             :initial-element (make-list (+ 2 (length (CAAAR l))) :initial-element #\.))))
         (pad-chars-z (make-list (+ 2 (length (CAAR l))) :initial-element (make-list (+ 2 (length (CAAAR l))) :initial-element #\.))))
     (nconc (list pad-chars-w)
-            (loop for w in l collect
-              (nconc (list pad-chars-z)
-                     (loop for z in w collect
-                        (nconc (list (make-list (+ 2 (length z)) :initial-element #\.))
-                               (loop for y in z collect (nconc (list #\.) y (list #\.)))
-                               (list (make-list (+ 2 (length z)) :initial-element #\.))))
-                      (list pad-chars-z)))
-             (list pad-chars-w))))
+           (loop for w in l collect
+             (nconc (list pad-chars-z)
+                    (loop for z in w collect
+                      (nconc (list (make-list (+ 2 (length z)) :initial-element #\.))
+                             (loop for y in z collect (nconc (list #\.) y (list #\.)))
+                             (list (make-list (+ 2 (length z)) :initial-element #\.))))
+                    (list pad-chars-z)))
+           (list pad-chars-w))))
 
 (defun parse-input (l)
  (to-array (add-padding-chars (list (list (mapcar (lambda (s) (concatenate 'list s)) l))))))
